@@ -1,3 +1,4 @@
+from BnB.Create import Create
 from textual.screen import Screen
 from textual.app import App, ComposeResult
 from textual.containers import VerticalGroup, Grid
@@ -24,7 +25,7 @@ class Login(Screen):
                     password=True
                 )
 
-        with Grid(id='login_button_group'):
+        with Grid(classes='login_button_group'):
             yield Button('Login', id='login')
             yield Button('Create User', id='create')
             yield Button('Quit', id='quit')
@@ -33,3 +34,5 @@ class Login(Screen):
         button_id = event.button.id
         if button_id == 'quit':
             self.app.exit()
+        elif button_id == 'create':
+            self.app.push_screen(Create())

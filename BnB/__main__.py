@@ -7,13 +7,11 @@ from textual.widgets import Footer, Header, Button
 class MainMenu(App):
     #BINDINGS = [('d', 'toggle_dark', 'Toggle Dark Mode')]
     TITLE = 'Bed And Breaky'
-    CSS_PATH = 'styles.tcss'
-
 
     def compose(self) -> ComposeResult:
         yield Header()
         yield Footer()
-        yield Login()
+        self.push_screen(Login())
 
 
 if __name__ == "__main__":

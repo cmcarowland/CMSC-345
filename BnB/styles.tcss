@@ -1,16 +1,14 @@
-Login {   
-    margin: 1;
-    padding: 1;
-}
 
 .label_input {
     align: center middle;
     grid-size: 2 1; 
-    grid-columns: 1fr 1fr; 
+    grid-columns: 1fr 4fr; 
+    height: 3;
 }
 
 #login_button_group {
     align: center middle;
     grid-size: 3 1; /* One row, three columns */
     grid-columns: 1fr 1fr 1fr; /* Distribute columns evenly */
+    height: 3;
 }

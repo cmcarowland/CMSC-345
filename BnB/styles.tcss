@@ -1,3 +1,6 @@
+Create {
+    padding: 5;
+}
 
 .label_input {
     align: center middle;
@@ -6,7 +9,7 @@
     height: 3;
 }
 
-#login_button_group {
+.login_button_group {
     align: center middle;
     grid-size: 3 1; /* One row, three columns */
     grid-columns: 1fr 1fr 1fr; /* Distribute columns evenly */

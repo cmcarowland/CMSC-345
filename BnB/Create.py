@@ -10,8 +10,6 @@ from textual.widgets import (
 )
 
 class Create(ModalScreen):
-    CSS_PATH = 'styles.tcss'
-
     def compose(self) -> ComposeResult:
         with VerticalGroup():
             with Grid(classes="label_input"):

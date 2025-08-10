@@ -4,18 +4,10 @@ from textual.widgets import (
     Button,
     Input,
     Label,
-    MaskedInput
 )
-
-from textual.message import Message
 
 class Login(VerticalGroup):
     CSS_PATH = 'Login.tcss'
-
-    class MyCustomMessage(Message):
-        def __init__(self, data: str) -> None:
-            super().__init__()
-            self.data = data
 
     def compose(self) -> ComposeResult:
         with Grid(classes="label_input"):
@@ -38,5 +30,4 @@ class Login(VerticalGroup):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == 'quit':
-            # Use post_message to send the message; the App will receive it
-            self.post_message(self.MyCustomMessage("Data from child"))
+            self.app.exit()

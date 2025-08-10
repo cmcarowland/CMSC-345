@@ -1,5 +1,4 @@
 from BnB.Login import Login
-
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header, Button
 
@@ -12,7 +11,6 @@ class MainMenu(App):
         yield Header()
         yield Footer()
         self.push_screen(Login())
-
 
 if __name__ == "__main__":
     app = MainMenu()

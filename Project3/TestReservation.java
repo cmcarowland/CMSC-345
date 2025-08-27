@@ -1,5 +1,8 @@
 import java.util.*;
 import java.text.SimpleDateFormat;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class TestReservation
 {
@@ -13,18 +16,30 @@ public class TestReservation
 
     static public void main(String[] args) 
     {
-        executeTests(1, "RoomWBath", "Jan 02, 2025", "Jan 05, 2025");
+        String file = "testcases.csv";
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Each line is a test case, split by comma if needed
+                String[] values = line.split("!");
+                // Process values as needed
+                int custId = Integer.parseInt(values[0].trim());
+                executeTests(custId, values[1].trim(), values[2].trim(), values[3].trim());
+                System.out.println();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     static public void executeTests(int custId, String roomType, String startDate, String endDate) {
         System.out.println("Testing Reservation " + custId);
         System.out.printf("Arguments: %d, %s, %s, %s\n", custId, roomType, startDate, endDate);
-        System.out.println("------------------------------");
-        Reservation reservation = new Reservation(custId, roomType, startDate, endDate);
-        testConstruction(reservation);
+        System.out.println("------------------------------------------------------------");
+        Reservation reservation = testConstruction(custId, roomType, startDate, endDate);
         testUUID(reservation);
         testReservationDate(reservation);
-        testGuestID(reservation);
+        testGuestID(reservation, custId);
     }
 
     static public long calculateReservationNumberOfDays(Reservation reservation) {
@@ -52,40 +67,43 @@ public class TestReservation
 
     }
 
-    static public void testConstruction(Reservation reservation) {
+    static public Reservation testConstruction(int custId, String roomType, String startDate, String endDate) {
         System.out.println("Construction Tests");
-        Assert.assertEqualsInt(1, reservation.getGuestID());
-        Assert.assertEqualsString("RoomWBath", reservation.getRoomType());
-        try {
-            Assert.assertEqualsDate(dateFormat.parse("Jan 02, 2025"), dateFormat.parse(reservation.getReservationStartDate()));
-            Assert.assertEqualsDate(dateFormat.parse("Jan 05, 2025"), dateFormat.parse(reservation.getReservationEndDate()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Reservation reservation = new Reservation(custId, roomType, startDate, endDate);
+            Assert.assertEqualsInt(reservation.getGuestID(), custId);
+            Assert.assertEqualsString(reservation.getRoomType(), roomType);
+            try {
+                Assert.assertEqualsDate(dateFormat.parse(reservation.getReservationStartDate()), dateFormat.parse(startDate));
+                Assert.assertEqualsDate(dateFormat.parse(reservation.getReservationEndDate()), dateFormat.parse(endDate));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        return reservation;
     }
     
     // public UUID getReservationID() ;
     static public void testUUID(Reservation reservation) {
         System.out.println("UUID Tests");
         Reservation r2 = new Reservation(1, "RoomWBath", "Jan 02, 2025", "Jan 05, 2025");
-        Assert.assertNotEqualsUUID(reservation.getReservationID(), r2.getReservationID());
+        Assert.assertNotEqualsUUID(r2.getReservationID(), reservation.getReservationID());
     }
 
     // public Date getReservationDate() ;
     static public void testReservationDate(Reservation reservation) {
         System.out.println("Reservation Date Tests");
-        try {
-            Date d = new Date();
-            Assert.assertEqualsInt(1, areDatesSimilar(d, reservation.getReservationDate()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            try {
+                Date d = new Date();
+                Assert.assertEqualsInt(1, areDatesSimilar(reservation.getReservationDate(), d));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
     
     // public int getGuestID()  ;
-    static public void testGuestID(Reservation reservation) {
+    static public void testGuestID(Reservation reservation, int oriID) {
         System.out.println("Guest ID Tests");
-        Assert.assertEqualsInt(1, reservation.getGuestID());
+        Assert.assertEqualsInt(oriID, reservation.getGuestID());
         int newGuestID = reservation.getGuestID() + 1;
         reservation.setGuestID(newGuestID);
         Assert.assertEqualsInt(newGuestID, reservation.getGuestID());

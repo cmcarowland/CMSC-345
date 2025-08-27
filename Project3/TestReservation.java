@@ -171,7 +171,7 @@ public class TestReservation
         System.out.println("---> Guest ID Tests (" + oriID + ")");
         int newGuestID = reservation.getGuestID() + 1;
         reservation.setGuestID(newGuestID);
-        Assert.assertEqualsInt(newGuestID, reservation.getGuestID());
+        Assert.assertEqualsInt(reservation.getGuestID(), newGuestID);
     }
 
     // public void setRoom(String var1) ;

@@ -47,6 +47,8 @@ public class TestReservation
         testSetReservationEndDate(reservation, endDate);
         testSetGuestID(reservation, custId);
         testSetRoom(reservation, roomType);
+        testCalculateReservationNumberOfDays(reservation);
+        testCalculateReservationBillAmount(reservation);
     }
 
     static public long calculateReservationNumberOfDays(Reservation reservation) {
@@ -125,6 +127,7 @@ public class TestReservation
         Assert.assertEqualsString(reservation.getReservationStartDate(), oriStartDate);
     }
 
+    // public void setReservationStartDate(String var1) ;
     static public void testSetReservationStartDate(Reservation reservation, String oriStartDate) {
         System.out.println("---> Reservation Start Date Tests");
         Assert.assertEqualsString(reservation.getReservationStartDate(), oriStartDate);
@@ -146,6 +149,7 @@ public class TestReservation
         Assert.assertEqualsString(reservation.getReservationEndDate(), oriEndDate);
     }
 
+    // public void setReservationEndDate(String var1) ;
     static public void testSetReservationEndDate(Reservation reservation, String oriEndDate) {
         System.out.println("---> Reservation End Date Tests");
         Assert.assertEqualsString(reservation.getReservationEndDate(), oriEndDate);
@@ -181,22 +185,25 @@ public class TestReservation
         Assert.assertEqualsString(reservation.getRoomType(), newRoomType);
     }
 
-    // public void setReservationStartDate(String var1) ;
-
-    // public void setReservationEndDate(String var1) ;
-
     // public long calculateReservationNumberOfDays() throws Exception ;
+    static public void testCalculateReservationNumberOfDays(Reservation reservation) {
+        System.out.println("---> Calculate Reservation Number of Days Tests");
+        try {
+            long days = calculateReservationNumberOfDays(reservation);
+            Assert.assertEqualsLong(reservation.calculateReservationNumberOfDays(), days);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // public double calculateReservationBillAmount() throws Exception ;
-
-
-    // try {
-    //     System.out.println("Testing Calculate: " + calculateReservationNumberOfDays(reservation));
-       
-    //     double price = (calculateReservationNumberOfDays(reservation) * roomTypes.get(reservation.getRoomType()));
-    //     Assert.assertEqualsDouble(price, reservation.calculateReservationBillAmount());
-    // } catch (Exception e) {
-    //     System.out.println("Exception during calculation\n");
-    //     e.printStackTrace();
-    // }
+    static public void testCalculateReservationBillAmount(Reservation reservation) {
+        System.out.println("---> Calculate Reservation Bill Amount Tests");
+        try {           
+            double price = (calculateReservationNumberOfDays(reservation) * roomTypes.get(reservation.getRoomType()));
+            Assert.assertEqualsDouble(reservation.calculateReservationBillAmount(), price);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

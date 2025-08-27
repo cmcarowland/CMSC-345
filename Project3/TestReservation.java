@@ -40,6 +40,7 @@ public class TestReservation
         testUUID(reservation);
         testReservationDate(reservation);
         testGuestID(reservation, custId);
+        testRoomType(reservation, roomType);
     }
 
     static public long calculateReservationNumberOfDays(Reservation reservation) {
@@ -68,7 +69,7 @@ public class TestReservation
     }
 
     static public Reservation testConstruction(int custId, String roomType, String startDate, String endDate) {
-        System.out.println("Construction Tests");
+        System.out.println("---> Construction Tests");
         Reservation reservation = new Reservation(custId, roomType, startDate, endDate);
             Assert.assertEqualsInt(reservation.getGuestID(), custId);
             Assert.assertEqualsString(reservation.getRoomType(), roomType);
@@ -84,14 +85,14 @@ public class TestReservation
     
     // public UUID getReservationID() ;
     static public void testUUID(Reservation reservation) {
-        System.out.println("UUID Tests");
+        System.out.println("---> UUID Tests");
         Reservation r2 = new Reservation(1, "RoomWBath", "Jan 02, 2025", "Jan 05, 2025");
         Assert.assertNotEqualsUUID(r2.getReservationID(), reservation.getReservationID());
     }
 
     // public Date getReservationDate() ;
     static public void testReservationDate(Reservation reservation) {
-        System.out.println("Reservation Date Tests");
+        System.out.println("---> Reservation Date Tests");
             try {
                 Date d = new Date();
                 Assert.assertEqualsInt(1, areDatesSimilar(reservation.getReservationDate(), d));
@@ -102,13 +103,24 @@ public class TestReservation
     
     // public int getGuestID()  ;
     static public void testGuestID(Reservation reservation, int oriID) {
-        System.out.println("Guest ID Tests");
+        System.out.println("---> Guest ID Tests");
         Assert.assertEqualsInt(oriID, reservation.getGuestID());
         int newGuestID = reservation.getGuestID() + 1;
         reservation.setGuestID(newGuestID);
         Assert.assertEqualsInt(newGuestID, reservation.getGuestID());
     }
-
+    
+    // public String getRoomType() ;
+    static public void testRoomType(Reservation reservation, String oriType) {
+        System.out.println("---> Room Type Tests");
+        Assert.assertEqualsString(reservation.getRoomType(), oriType);
+        String newRoomType = "NormalRoom";
+        if(reservation.getRoomType().equals(newRoomType)) {
+            newRoomType = "RoomWBath";
+        }
+        reservation.setRoom(newRoomType);
+        Assert.assertEqualsString(reservation.getRoomType(), newRoomType);
+    }
 
     // try {
     //     System.out.println("Testing Calculate: " + calculateReservationNumberOfDays(reservation));
@@ -123,7 +135,6 @@ public class TestReservation
 
 
 
-    // public String getRoomType() ;
 
     // public String getReservationStartDate() ;
 

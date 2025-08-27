@@ -41,6 +41,10 @@ public class TestReservation
         testReservationDate(reservation);
         testGuestID(reservation, custId);
         testRoomType(reservation, roomType);
+        testReservationStartDate(reservation, startDate);
+        testSetReservationStartDate(reservation, startDate);
+        testReservationEndDate(reservation, endDate);
+        testSetReservationEndDate(reservation, endDate);
     }
 
     static public long calculateReservationNumberOfDays(Reservation reservation) {
@@ -122,6 +126,49 @@ public class TestReservation
         Assert.assertEqualsString(reservation.getRoomType(), newRoomType);
     }
 
+    // public String getReservationStartDate() ;
+    static public void testReservationStartDate(Reservation reservation, String oriStartDate) {
+        System.out.println("---> Reservation Start Date Tests");
+        Assert.assertEqualsString(reservation.getReservationStartDate(), oriStartDate);
+    }
+
+    static public void testSetReservationStartDate(Reservation reservation, String oriStartDate) {
+        System.out.println("---> Reservation Start Date Tests");
+        Assert.assertEqualsString(reservation.getReservationStartDate(), oriStartDate);
+        try {
+            Date d = dateFormat.parse(oriStartDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(d);
+            c.add(Calendar.DATE, -1);
+            reservation.setReservationStartDate(dateFormat.format(c.getTime()));
+            Assert.assertEqualsString(reservation.getReservationStartDate(), dateFormat.format(c.getTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // public String getReservationEndDate() ;
+    static public void testReservationEndDate(Reservation reservation, String oriEndDate) {
+        System.out.println("---> Reservation End Date Tests");
+        Assert.assertEqualsString(reservation.getReservationEndDate(), oriEndDate);
+    }
+
+    static public void testSetReservationEndDate(Reservation reservation, String oriEndDate) {
+        System.out.println("---> Reservation End Date Tests");
+        Assert.assertEqualsString(reservation.getReservationEndDate(), oriEndDate);
+        try {
+            Date d = dateFormat.parse(oriEndDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(d);
+            c.add(Calendar.DATE, 2);
+            reservation.setReservationEndDate(dateFormat.format(c.getTime()));
+            Assert.assertEqualsString(reservation.getReservationEndDate(), dateFormat.format(c.getTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     // try {
     //     System.out.println("Testing Calculate: " + calculateReservationNumberOfDays(reservation));
        
@@ -136,9 +183,7 @@ public class TestReservation
 
 
 
-    // public String getReservationStartDate() ;
 
-    // public String getReservationEndDate() ;
 
     // public void setGuestID(int var1) ;
 

@@ -46,6 +46,7 @@ public class TestReservation
         testReservationEndDate(reservation, endDate);
         testSetReservationEndDate(reservation, endDate);
         testSetGuestID(reservation, custId);
+        testSetRoom(reservation, roomType);
     }
 
     static public long calculateReservationNumberOfDays(Reservation reservation) {
@@ -113,15 +114,9 @@ public class TestReservation
     }
     
     // public String getRoomType() ;
-    static public void testRoomType(Reservation reservation, String oriType) {
+    static public void testRoomType(Reservation reservation, String oriRoom) {
         System.out.println("---> Room Type Tests");
-        Assert.assertEqualsString(reservation.getRoomType(), oriType);
-        String newRoomType = "NormalRoom";
-        if(reservation.getRoomType().equals(newRoomType)) {
-            newRoomType = "RoomWBath";
-        }
-        reservation.setRoom(newRoomType);
-        Assert.assertEqualsString(reservation.getRoomType(), newRoomType);
+        Assert.assertEqualsString(reservation.getRoomType(), oriRoom);
     }
 
     // public String getReservationStartDate() ;
@@ -175,6 +170,16 @@ public class TestReservation
     }
 
     // public void setRoom(String var1) ;
+    static public void testSetRoom(Reservation reservation, String oriRoom) {
+        System.out.println("---> Room Type Tests (" + oriRoom + ")");
+        Assert.assertEqualsString(reservation.getRoomType(), oriRoom);
+        String newRoomType = "NormalRoom";
+        if(reservation.getRoomType().equals(newRoomType)) {
+            newRoomType = "RoomWBath";
+        }
+        reservation.setRoom(newRoomType);
+        Assert.assertEqualsString(reservation.getRoomType(), newRoomType);
+    }
 
     // public void setReservationStartDate(String var1) ;
 

@@ -68,7 +68,14 @@
 - **Coupling**: Degree of interdependence between units (loose coupling is desirable).
 
 ### Cohesion
-- Seven categories (from worst to best): Coincidental, Logical, Temporal, Procedural, Communicational, Sequential, Functional.
+- Seven categories (from worst to best): 
+  1. Coincidental
+  2. Logical
+  3. Temporal
+  4. Procedural
+  5. Communicational
+  6. Sequential
+  7. Functional
 - Quantitative measures: Weak functional cohesion = glue tokens / total data tokens; Strong functional cohesion = superglue tokens / total data tokens.
 - Example: Focusing a procedure on a single function increases cohesion.
 

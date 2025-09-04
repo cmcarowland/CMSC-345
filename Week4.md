@@ -69,13 +69,13 @@
 
 ### Cohesion
 - Seven categories (from worst to best): 
-  1. Coincidental
-  2. Logical
-  3. Temporal
-  4. Procedural
-  5. Communicational
-  6. Sequential
-  7. Functional
+  1. Coincidental - performing multiple unrelated tasks
+  2. Logical - performs a series of similar tasks
+  3. Temporal - puts together a series of elements that are related by time
+  4. Procedural - which means that they are related in terms of some control sequence
+  5. Communicational - design is related by the sequence of activities
+  6. Sequential - may still include some elements that are not single-goal oriented
+  7. Functional - single-goal oriented
 - Quantitative measures: Weak functional cohesion = glue tokens / total data tokens; Strong functional cohesion = superglue tokens / total data tokens.
 - Example: Focusing a procedure on a single function increases cohesion.
 

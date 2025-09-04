@@ -79,8 +79,27 @@
 - Quantitative measures: Weak functional cohesion = glue tokens / total data tokens; Strong functional cohesion = superglue tokens / total data tokens.
 - Example: Focusing a procedure on a single function increases cohesion.
 
+### Program slice and Data Slice based cohesion Measure
+- A **data token** is any variable or constant.
+- A **slice** within the program or procedure is all the statements that can affect the value of some specific variable of interest.
+- A **data slice** is all the data tokens in a slice that will affect the value of a specific variable of interest.
+- **Glue tokens** are the data tokens in the procedure or program that lie in more than one data slice.
+- **Superglue tokens** are the data tokens in the procedure or program that lie in every data slice in the program.
+
+#### Examples
+- **Data token**: Any variable or constant.
+- **Program or procedure slice**: All the statements that can affect the value of some specific variable of interest.
+- **Data slice**: All the data tokens in a slice that will affect the value of a specific variable of interest.
+- **Glue tokens**: The data tokens in the procedure or program that lie in more than one data slice.
+- **Superglue tokens**: The data tokens in the procedure or program that lie in every data slice in the program.
+
 ### Coupling
-- Five levels (from worst to best): Content, Common, Control, Stamp, Data coupling.
+- Five levels (from worst to best): 
+- **Content coupling**: One module uses the internal data or logic of another module.
+- **Common coupling**: Modules share global data.
+- **Control coupling**: One module controls the flow of another by passing control information.
+- **Stamp coupling**: Modules share a composite data structure, but only use parts of it.
+- **Data coupling**: Modules share data through parameters; each parameter is used independently.
 - Tight coupling makes reuse, maintenance, and testing harder; loose coupling is preferred.
 - Pairwise coupling metric: C(x, y) = i + [n/(n + 1)], where i = highest coupling level, n = number of relationships.
 - Global system coupling is the median of all pairwise couplings.

@@ -2,6 +2,7 @@ from hashlib import md5
 
 from BnB.utils import get_users, save_users
 from BnB.Create import Create
+from BnB.CreateReservation import CreateReservation
 
 from textual.screen import Screen
 from textual.app import App, ComposeResult
@@ -53,5 +54,6 @@ class Login(Screen):
         elif button_id == 'login':
             if self.check_login():
                 self.notify("Login Successful!!", severity="success", timeout=5)
+                self.app.push_screen(CreateReservation())
             else:
                 self.notify("Invalid username or password", severity="error", timeout=5)

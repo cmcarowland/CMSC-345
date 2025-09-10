@@ -2,6 +2,12 @@ Create {
     padding: 5;
 }
 
+ListView {
+    width: 30;
+    height: auto;
+    margin: 2 2;
+}
+
 .label_input {
     align: center middle;
     grid-size: 2 1; 
@@ -13,5 +19,12 @@ Create {
     align: center middle;
     grid-size: 3 1; /* One row, three columns */
     grid-columns: 1fr 1fr 1fr; /* Distribute columns evenly */
+    height: 3;
+}
+
+.reservation_grid {
+    align: center middle;
+    grid-size: 2 2; 
+    grid-columns: 1fr 4fr; 
     height: 3;
 }

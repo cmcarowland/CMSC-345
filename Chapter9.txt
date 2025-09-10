@@ -1,0 +1,144 @@
+Objectives
+
+Describe some of the characteristics of good implementations and the best practices that help achieve them.
+Understand the role of comments in producing a good program and the characteristics of good comments.
+Learn some of the techniques for effectively debugging programs.
+Analyze the concept of refactoring and a few refactoring techniques.
+
+9.1 Introduction to Implementation
+
+The ultimate goal of most software engineering projects is to produce a working program. The act of transforming the detailed design into a valid program in some programming language, together with all its supporting activities is referred to as implementation. To simplify matters in this chapter, we assume a traditional software engineering life cycle, with an explicit, detailed design being produced. In many cases the detailed design is not done explicitly but is left as part of the implementation. Chapter 7 discussed techniques for software design, and Chapter 8 described how to evaluate good designs.
+Doing the detailed design as part of the implementation is usually faster, but it may result in a less cohesive and less organized design, because the detailed design of each module will usually be done by a different person. In small projects, the detailed design is usually left as part of the implementation. In larger projects, or when the programmers are inexperienced, the detailed design will be done by a separate person. Of course, this decision does not have to be the same for all modules. The most important modules may be explicitly designed by the most experienced personnel, with the less important ones left to other programmers.
+The implementation phase involves more than just writing code. Code also needs to be tested and debugged as well as compiled and built into a complete executable product. We usually need to utilize configuration management in order to keep track of different versions of the code.
+In this chapter we cover all aspects of implementation except testing, which is covered in Chapter 10, and building and configuration management, which is covered in Chapter 11.
+
+9.2 Characteristics of a Good Implementation
+
+It is always a good idea to keep in mind the following characteristics that should be found in a good implementation:
+Readability: The code can be easily read and understood by other programmers.
+Maintainability: The code can be easily modified and maintained. Note that this is related to readability, but it is not exactly the same; for example, this involves the use of Hungarian notation, first put forward by Charles Simonyi of Microsoft (see Simonyi, 1976), in which variable names include abbreviations for the type of variable.
+Performance: All other things being equal, the implementation should produce code that performs as fast as possible.
+Traceability: All code elements should correspond to a design element. Code can be traced back to design (and design to requirements).
+Correctness: The implementation should do what it is intended to do (as defined in the requirements and detailed design).
+Completeness: All of the system requirements are met.
+The first instinct of many programmers would be to concentrate on correctness, and then maybe on performance, without too much emphasis on readability and maintainability. For many software engineers engaged in large, multiple-release software projects, maintainability is as important as correctness (or even more important), and performance is of lesser importance in most cases.
+It is important to realize that achieving these characteristics requires serious effort and that there are interactions and trade-offs between these desirable characteristics. Readability usually helps maintainability, and both of these usually help achieve correctness. Performance optimizations often reduce readability and maintainability, and sometimes even performance.
+
+9.3 Programming Style and Coding Guidelines
+
+Almost all software development organizations have some sort of coding guidelines. These guidelines usually specify issues such as naming, indentation, and commenting styles, issues that may be contentious for many programming teams. Notice that there are many tools that will automatically indent and reformat your code, so such issues do not need to be as contentious as might be expected.
+The most important thing to realize is that most of those issues—especially those dealing more with syntax (such as capitalization and indentation guidelines)—are not terribly important, and basically are simply a matter of getting accustomed to a particular style. However, we strongly recommend that you be consistent in your notation to avoid confusion when others are debugging or maintaining your code later. In large software projects, there are usually some programming conventions. These conventions may seem to be of little value at first, but they may become extremely helpful in the build and integration cycle when, for example, all the parts with a prefix of a001 need to be compiled together, where the a001 prefix signifies a certain component.
+A similar scheme is used for issuing error messages. For example, you want to write a message to users that is informative and clear, but along with that, you can prefix the message with some identifier that allows the programmers to identify, for debugging purposes, where the message was issued from.
+Another point usually made in coding guidelines is the recommendation of banning certain language features and practices that have proved, for the organization, error-prone. For example, many organizations will ban the use of pointers or multiple inheritance in languages that support them, and of course, almost all organizations will require the code to compile without any warnings and without using any deprecated language features.
+The most important issues for maintaining a good coding style are to be consistent and to try to highlight the meaning of your code. The following recommendations are related to the issues that affect coding style:
+Naming: This refers to choosing names for classes, methods, variables, and other programming entities. Naming is mainly a semantic issue about choosing good names. It is also one of the most important issues in improving readability and maintainability. A well-chosen name that conveys the intent of a module will make the code immediately understandable, while a badly chosen name will necessitate a comment, or even mislead the reader. We (and many others) have noticed a strong correlation between good names and understanding. In many cases, if you cannot think of a good name for a module, then you do not understand it well enough. We recommend choosing long names for global entities, and much shorter names for local entities that are used for a small section of code.
+Another key issue with naming is consistency. Always use the same word (or abbreviation) for a given concept, and avoid using the same word for two different concepts, even in a different context. When choosing among available words for a concept, we recommend that you choose one that is consistent with external standards, following the convention of your particular programming language or platform.
+Naming may become a more complex issue when dealing with multicultural and multilanguage teams. In this case, deciding in advance to take the names from one particular human language is a good idea.
+Separating words and capitalization: Many times a name will be composed of more than one word. In human languages, we use spaces to separate words, but most programming languages will not allow us to do so. Different programming languages have used different conventions for how to combine several words into one identifier. We strongly recommend using the standard conventions for your language, and making sure you follow it in every case.
+As a sample of conventions, the C language uses all lowercase identifiers, with underscores for separating words, as in do_something, while Java will use no separation but will capitalize the first letter of the second word, as in doSomething. Java also has some rules about when to start a name with an uppercase or lowercase letter. See the Suggested Readings section at the end of this chapter for more resources on this topic.
+Indentation and spacing: Indentation refers to adding horizontal spaces before some lines to better reflect the structure of the code. Spacing refers to both spaces and blank lines inserted in the code. A common beginner's mistake is to not indent properly. As an example, try to understand the following fragment, which is not indented:
+
+public static int largest(int arr[]){
+assert(arr.length>0);
+int curLargest=arr[0];
+for(int i=1; i<arr.length; ++i) {
+if(arr[i]>curLargest)
+curLargest=arr[i];
+}
+return curLargest;
+}
+Now look at a version that is indented incorrectly:
+
+public static int largest(int arr[]){
+    assert(arr.length>0);
+    int curLargest=arr[0];
+    for(int i=1; i<arr.length; ++i)
+            if(arr[i]>curLargest)
+                            curLargest=arr[i];
+    return curLargest;
+}
+(Can you spot the error?) And finally look at this version, with correct indentation:
+
+public static int largest(int arr[]){
+    assert(arr.length>0);
+    int curLargest=arr[0];
+    for(int i=1; i<arr.length; ++i) {
+        if(arr[i]>curLargest)
+            curLargest=arr[i];
+    }
+    return curLargest;
+}
+We consider indentation a very important issue affecting readability and maintainability. A common indentation style should be defined, and all programmers should follow it. The most important issue here is consistency, because programmers will rapidly grow accustomed to a given indentation style. Many times a de facto indentation standard style for a language exists, usually the one used in the primary language reference. We strongly suggest using it, as most programmers will be familiar with it.
+Function/method size: Many studies have shown that large functions or methods are statistically more error-prone than smaller ones. (Up to a certain point, actually, very small methods will have more errors on average; see Hatton [1997] for more details.) The size issue has been studied since the 1960s and the days of structured programming by the likes of Harlan Mills and Edsgar Dijkstra (see the two articles by Dijkstra in the Suggested Readings section). Practical considerations also affect method size; only a certain number of lines can fit in a string or on a printed page, and having the ability to look at the whole method is important in readability and maintainability. We recommend limiting the size of each method to around 50 lines whenever possible, which can comfortably fit on a screen or a page.
+File-naming issues: Having a standard for specifying how to name the files, which files to generate for each module, and how to locate a given file from a module is very advantageous. You could have a separate document specifying what modules go in which files, but having a file-naming convention can make things much easier.
+Particular programming constructs: Different programming languages support different features; although they usually have good reasons to include certain features, there are many that can be misused and need special precautions. Examples of features considered dangerous are the GOTO keyword and multiple inheritance. As an extreme case, C provides the functions setjmp and longjmp, which allow for a kind of global GOTO; see Dijkstra (2003), a transcription of a letter he wrote to the ACM editor in 1968.
+Most of these constructs were included in languages for a reason, and they have their applications. We recommend that dangerous constructs be banned by default, with the programmers being able to get authorization for particular uses if they can demonstrate that the benefits outweigh the dangers.
+
+9.4 Comments
+
+Comments are very important and can significantly aid or hurt readability and maintainability. There are two main problems with comments: (1) they may distract from the actual code and make the program more difficult to read and (2) they may be wrong. Comments may become outdated as the code changes, or they may be wrong the first time they are written because they are not executable and cannot be tested.
+We classify comments into six different types, of which the first five correspond to those defined by McConnell (2004):
+Repeat of the code: These kinds of comments tend to be done by novice programmers and should be avoided. Misguided coding guidelines often require programmers to create these kinds of comments by mandating a comment block for each function, with a line for each parameter. For the most part, these comments will only be wasted effort and distract the reader. An extreme example would be the following comment:
+
+// increment i by one
+++i;
+Explanation of the code: Sometimes, when the code is complex, programmers are tempted to explain what the code does in human language. We strongly believe that in almost every case, if the code is so complex that it requires an explanation, then it should be rewritten.
+Marker in the code: It is common practice to put markers in the code to indicate incomplete items, opportunities for improvement, and other similar information. We recommend using a consistent notation for these markers, and eliminating all of them before the code is in production. Sometimes programmers put markers in the code to keep track of changes and who made them. We believe that information is better tracked with version management software, and recommend doing so.
+Summary of the code: Comments that summarize what the code does, rather than just repeating it, are very helpful in understanding the code, but they need to be kept up to date. It is important to ensure that these comments are really summarizing the code, not just repeating or explaining it. In many cases, the code that is being summarized can be abstracted into its own function, which, if named correctly, will eliminate the need for the comment.
+Description of the code intent: These are the most useful kinds of comments; they describe what the code is supposed to do rather than what it does. These are the only kinds of comments that override the code. If the code does not fulfill its intent, then the code is wrong.
+External references: These are comments that link the code to external entities, usually books or other programs. Many times these can be viewed as a kind of intent statement, as in, "This function implements the XYZ algorithm, as explained in …," but we believe such comments require special attention. There may also be external prerequisites and corequisites for the code, such as the existence of initializing data in the database tables.
+The trade-off that comments imply should be recognized. Comments can help clarify code and relate it to other sources, but they also represent some level of duplication of the code. Effort is invested in their creation and, above all, in their maintenance. A comment that does not correspond to the actual code that it accompanies can cause errors that are very hard to find and correct.
+Another danger comments present is that they can be used to justify bad coding practices. Many times programmers will be tempted to produce code that is too complicated or too hard to maintain, and add comments to it, rather than rewrite it to good standards. In fact, many experts recommend avoiding comments completely, and produce what is called "self-documented code"—that is, code that is so well written that it does not need any documentation. We believe that is an ideal that programmers should strive for, but that comments have their place, especially in the form of describing the programmer's intent.
+We strongly encourage programmers to use good names and good programming practices and reserve comments mainly for external references and statements of intent. If the code cannot be abstracted and it is still complex, summary comments may be appropriate. Code explanations and markers should only be used as temporary measures, and repetitions of the code should be always avoided.
+A problem with comments is that most programming books and tutorials, because they are geared for beginners (or at least for people who do not know a particular technique or library), tend to provide too many comments, usually repeating or explaining the code. Many programmers will either imitate this style, or go to the other extreme and avoid comments at all costs. McConnell (2004) and Kernighan and Pike (1999) provide examples of good commenting practices.
+
+9.5 Debugging
+
+Debugging is the act of locating and fixing errors in code. The errors are usually discovered through testing, but they can be found by other means, including code inspections and through normal use of the program. We can identify four phases in the debugging process (besides discovering the error, which we do not consider part of debugging). These phases will need to occur in almost every case. Keep in mind that debugging is a highly iterative process, in which you will be creating a hypothesis about what causes the errors, writing test cases to prove or disprove the hypothesis, and changing the code to try to fix the problem. If the hypothesis happens to be false, you will need to go back to generating and corroborating a new hypothesis. The four phases in the debugging process can be summarized as follows:
+Stabilization, sometimes called reproduction: The purpose of this phase is to be able to reproduce the error on a particular configuration (in many cases the developer's machine), and to find out the conditions that led to the error by constructing a minimal test case. We do not need to look at the code at all in this phase; we just need to identify which input conditions, combined with which program states, produce the error.
+The output of the stabilization phase is a series of test cases that produce the error, and possibly some cases that perform correctly. Stabilization also involves minimization of the conditions that led to the error. After you write a test case that reproduces the error, try to write a simpler one that also fails. Although stabilization is a trivial task in many cases, it can be very difficult sometimes. Many errors will appear to occur at random, and testing the program twice with the same input will sometimes produce different results, depending on the state the program is in. Variables that are not initialized, dangling pointers, and the interaction of several threads tend to produce errors that appear to be random.
+Localization: The process of localization involves finding the sections of the code that led to the error. This is usually the hardest part, although, if the stabilization phase produces a very simple test case, it may make the problem obvious.
+Correction: The process of correction involves changing the code to fix the errors. Hopefully, if you understand what caused the error, you have a good chance of fixing the problem. A common mistake is to try to correct the problem without having really stabilized it or located it within the source code, which leads to random changes that do not fix the code and may introduce new errors.
+Verification: The process of verification involves making sure the error is fixed, and no other errors were introduced with the changes in the code. Many times, a change in the code will not fix the error or may introduce new errors.
+Errors in a program can be broadly categorized into syntax and logic errors. Syntax errors in compiled languages tend to be easy to find, as the compiler will detect them and can provide some information about its source. Although compiler error messages are not usually examples of clarity, programmers will quickly learn to use them to find and solve the problem.
+Although debugging is a very complicated task, there are several rules of thumb that tell you where to find errors. It is important to realize that many routines will have a high number of errors, either because of complexity, bad design, or problems introduced by their creator. Some indications may be there from the design or code inspections. Routines with more than one error will tend to have even more errors. Newly created code tends to have more errors as it has not been exercised (and so tested) as much as the old code. You will also need to learn your own heuristics about which parts of your program, language features, or particular programs, are error-prone and in which ways.
+The following tools can help with the debugging process:
+Source code comparators that can help you quickly find changes to the code.
+Extended checkers that find problems with your syntax, logic, or style. They can highlight error-prone code and many times find errors before they are detected by executing the program. The classic example of this kind of tool is lint, used to check C programs.
+Interactive debuggers that let you examine variables, step over certain points in your code, and establish breakpoints and interrupt the program at particular places. Interactive debuggers can help greatly, but they are commonly misused, especially by beginner programmers, who try to use them as a substitute for understanding the code.
+Specially constructed libraries that reimplement standard libraries but with extra safeguards, to detect and prevent errors.
+Tools such as profilers, which describe the pre- and postconditions (discussed in Section 9.6) and coverage tools that are primarily used for other purposes but can help in testing.
+
+9.6 Assertions and Defensive Programming
+
+A very useful technique is the use of assertions, which is related to the more formal concepts of preconditions and postconditions. A precondition is a condition that your module requires in order to produce correct results. A postcondition is a condition that should hold true after executing your code, if the preconditions were met. It is a good practice to make your preconditions explicit by the use of assertions—that is, statements that check a condition and produce an error if the condition is not met. Most modern programming languages have specific facilities for assertions. By making your assertions explicit and executable, you can catch many errors. Preconditions and postconditions can also be used with formal methods to prove that a code actually executes correctly.
+
+9.7 Performance Optimization
+
+Performance is an important aspect of almost any program, but we have to understand the trade-offs. Optimizing for performance usually (but not always) affects maintainability and readability for the worse. Keep in mind that correctness is obviously more important than performance, and maintainability is as well, because it helps future correctness. The only possible exception to this rule is in real-time systems, in which performing an action within certain time limits is a part of being correct.
+One of the most common mistakes programmers make is to worry too early about performance. The first goal is to make a program that is correct and easy to maintain. After the program is finished, if the performance is unsatisfactory, then it is time to worry about it. In many cases, the performance will not be a problem, saving substantial effort. Another common mistake is to optimize all the code for performance, without measuring first. Most pieces of a program will be executed only a few times and will not impact performance significantly. There are only a few pieces of a program that will impact performance and that need to be optimized.
+A profiler is a tool that runs a program and calculates how much time it spends on each part. It will help you find the performance bottlenecks and the modules that need to be optimized. Armed with this information, you can then review and optimize only those modules that will have a sizable impact on performance. After making the changes, measure and profile again to make sure the changes actually improve performance.
+In a few cases, bad performance is a symptom of a bad design or bad coding, and making code simpler and clearer will also result in better performance. In most cases, it should be possible to modularize the code so that the performance optimizations are hidden in very specific places, and most of the code is clear. A good optimizing compiler can also take care of many performance optimizations without the programmer sacrificing any clarity.
+As with most other activities, a cost-benefit analysis should be done before undergoing performance optimization. Given that a programmer's time is much more expensive than machine time, it may be cheaper to leave the program as is and just buy more capable hardware. Besides the programmer's cost, the decrease in maintainability and the possibility of introducing errors need to be weighed.
+This warning about performance optimization should not be construed as a recommendation to produce bloated code. Good programming practices and judicious design choices can go a long way in producing code that is correct, maintainable, and fast. One of the best practices is to reuse as much existing high-quality code as possible. Most of the standard data structures and algorithms that can substantially increase performance of an application have already been implemented and are available, in many cases, as part of the standard library included with your language compiler. Know your library and which other high-quality code is available, and use such code rather than reimplement it in new code.
+
+9.8 Refactoring
+
+Even when using best practices and making a conscious effort to produce high-quality software, it is highly unlikely that you will consistently produce programs that cannot be improved. You will be learning more about programming and about the particular problem you are working on as you go.
+Programming is, in many ways, similar to writing in a natural language; after all, a program communicates a process to the computer, and, more importantly, to other programmers. In the same way that written documents can be improved and polished after writing them, programs can also be improved for style. An important difference is that, in programming, we usually do not want to change the interface or observable behavior of the program or module, because this will impact other modules.
+Martin Fowler (1999) popularized the term refactoring to refer to the activity of improving your code style without altering its behavior. He also uses this term for each of the individual changes you can do to improve the structure of your code. Fowler defines a catalog of symptoms indicating that your code needs refactoring, which he calls "bad smells," and provides a catalog of useful refactorings.
+Recall that the concept of refactoring is also part of Beck's Extreme Programming methodology described in Chapter 5. Refactoring is one of the most powerful techniques for producing good code. Of course, you should use good programming practices and try to produce high-quality code the first time. However, you should also try to refactor it and improve it as you go.
+The catalog of "bad smells" provided by Fowler includes the following:
+Duplicated code (clearly a waste).
+Long method (excessively large or long methods perhaps should be subdivided into more cohesive ones).
+Large class (same problem as long method).
+Switch statements (in object-oriented code, switch statements can in most cases be replaced with polymorphism, making the code clearer).
+Feature envy, in which a method tends to use more of an object from a class different to the one it belongs.
+Inappropriate intimacy, in which a class refers too much to private parts of other classes.
+Any of these symptoms, as well as the others that Fowler cites and the ones you will develop, will indicate that your code can be improved. You can use refactorings to help you deal with these problems.
+Refactoring A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior.
+According to Fowler (1999), refactoring is "a change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior." The following are a few of the refactorings that Fowler discusses:
+Extract method: A process that turns a code fragment into its own method, with an appropriate name, and calls the method.
+Substitute algorithm: A process that replaces the body of a method with a new algorithm that is clearer, and returns the same result.
+Move method: A process that moves an algorithm from one class to another where it makes more sense.
+Extract class: A process that divides into two.
